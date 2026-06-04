@@ -83,6 +83,7 @@ const evolutionApi = axios.create({
 const qrcodeBase64 = ref('');
 const statusConexao = ref('');
 const instancia = ref('');
+const numero = ref('');
 
 // função que faz a geração do qrcode
 async function gerarQrCode() {
@@ -105,6 +106,7 @@ async function verificarConexao() {
         instancias.forEach(inst => {
             if (inst.name === instancia.value) {
                 statusConexao.value = inst.connectionStatus === 'open' ? 'Conectado' : 'Não conectado';
+                numero.value = inst.ownerJid || '';
             }
         });
     } catch (erro) {
@@ -128,7 +130,10 @@ function close() {
     <div class="card">
         <div class="font-semibold text-xl mb-4">Clique em gerar e depois aponte seu celular para o QRcode para conectar
             seu WhatsApp -- Status atual:
-            <span :class="statusConexao == 'Conectado' ? 'text-green-500' : 'text-red-500'">{{ statusConexao }}</span>
+            <span :class="statusConexao == 'Conectado' ? 'text-green-500' : 'text-red-500'">{{ statusConexao }} <span
+                    v-if="numero">-
+                    {{
+                        numero.replace('@s.whatsapp.net', '') }}</span></span>
         </div>
         <Dialog v-model:visible="display" header="QR Code" :modal="true" :style="{ width: '350px' }">
             <div v-if="qrcodeBase64">
