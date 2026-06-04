@@ -286,7 +286,8 @@ const coresStatus = {
                 <InputIcon>
                     <i class="pi pi-search" />
                 </InputIcon>
-                <InputText v-model="termoPesquisa" placeholder="Pesquisar..." @keyup.enter="pesquisar" />
+                <InputText v-model="termoPesquisa" placeholder="Pesquise nome ou número..." @keyup.enter="pesquisar" />
+                <Button label="Buscar" class="ms-1" @click="pesquisar"></Button>
             </IconField>
         </div>
 
