@@ -1,0 +1,39 @@
+name: Deploy vue para VPS
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: deploy-master
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          envs: VPS_APP_PATH
+          script: |
+            set -e
+
+            cd "$VPS_APP_PATH"
+
+            git fetch origin master
+            git reset --hard origin/master
+
+            npm ci
+
+            npm run build
+
+
+        env:
+          VPS_APP_PATH: ${{ secrets.VPS_APP_PATH }}
