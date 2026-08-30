@@ -128,7 +128,7 @@ function close() {
     </div>
 
     <div class="card">
-        <div class="font-semibold text-xl mb-4">Clique em gerar e depois aponte seu celular para o QRcode para conectar
+        <div class="font-semibold text-xl mb-4">Clique em gerar, após isso aponte seu celular para o QRcode para conectar
             seu WhatsApp -- Status atual:
             <span :class="statusConexao == 'Conectado' ? 'text-green-500' : 'text-red-500'">{{ statusConexao }} <span
                     v-if="numero">-
