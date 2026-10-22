@@ -24,10 +24,8 @@ onMounted(() => {
             totalLeadsMes.value = responses[0].data.data.total;
             totalClientesMes.value = responses[1].data.data.total;
             totalClientes.value = responses[2].data.data.total;
+            totalLeadsMesTodos.value = responses[3].data.data;
             totalClientesAtivos.value = responses[4].data.data.total;
-
-            const meses = responses[3].data.data[0];
-            totalLeadsMesTodos.value = Object.values(meses);
         })
         .catch((error) => {
             console.log("Erro: ", error);
@@ -108,9 +106,9 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-        <!--<div class="col-span-12 xl:col-span-6">
-            <RevenueStreamWidget />
+        <div class="col-span-12 xl:col-span-12">
+            <GraficoBarras titulo="Leads por mês" :data="totalLeadsMesTodos" />
         </div>
-        -->
+
     </div>
 </template>

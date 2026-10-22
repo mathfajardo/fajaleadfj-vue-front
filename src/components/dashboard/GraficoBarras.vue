@@ -1,8 +1,12 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import { onMounted, ref, watch } from 'vue';
-
 const { layoutConfig, isDarkTheme } = useLayout();
+
+const props = defineProps({
+    titulo: String,
+    data: Array
+});
 
 const chartData = ref(null);
 const chartOptions = ref(null);
@@ -11,33 +15,13 @@ function setChartData() {
     const documentStyle = getComputedStyle(document.documentElement);
 
     return {
-        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+        labels: props.data.map(row => row.periodo),
         datasets: [
             {
-                type: 'bar',
-                label: 'Subscriptions',
-                backgroundColor: documentStyle.getPropertyValue('--p-primary-400'),
-                data: [4000, 10000, 15000, 4000],
-                barThickness: 32
-            },
-            {
-                type: 'bar',
-                label: 'Advertising',
-                backgroundColor: documentStyle.getPropertyValue('--p-primary-300'),
-                data: [2100, 8400, 2400, 7500],
-                barThickness: 32
-            },
-            {
-                type: 'bar',
-                label: 'Affiliate',
-                backgroundColor: documentStyle.getPropertyValue('--p-primary-200'),
-                data: [4100, 5200, 3400, 7400],
-                borderRadius: {
-                    topLeft: 8,
-                    topRight: 8
-                },
-                borderSkipped: true,
-                barThickness: 32
+                label: "Leads por mes",
+                data: props.data.map(row => row.total),
+                borderColor: '#04c237',
+                backgroundColor: '#04c237'
             }
         ]
     };
@@ -51,6 +35,11 @@ function setChartOptions() {
     return {
         maintainAspectRatio: false,
         aspectRatio: 0.8,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
         scales: {
             x: {
                 stacked: true,
@@ -90,7 +79,7 @@ onMounted(() => {
 
 <template>
     <div class="card">
-        <div class="font-semibold text-xl mb-4">Revenue Stream</div>
+        <div class="text-muted-color text-xl mb-4">{{ props.titulo }}</div>
         <Chart type="bar" :data="chartData" :options="chartOptions" class="h-80" />
     </div>
 </template>
