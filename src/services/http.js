@@ -20,16 +20,9 @@ axiosInstance.interceptors.request.use((config) => {
 // Interceptor para ver respostas
 axiosInstance.interceptors.response.use(
     (response) => {
-        console.log("Resposta OK:", response.status, response.config.url);
         return response;
     },
     (error) => {
-        console.log("Erro na resposta:", {
-            url: error.config?.url,
-            status: error.response?.status,
-            headers: error.config?.headers,
-            data: error.response?.data,
-        });
         return Promise.reject(error);
     },
 );
