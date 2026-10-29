@@ -102,9 +102,7 @@ onMounted(() => {
         .then((response) => {
             leads.value = response.data.data;
             leadsOriginal.value = response.data.data;
-            console.log("leads: ", leads.value[1]);
             carregamento.value = false;
-            console.log(leads.value);
         })
         .catch((error) => {
             console.log("Erro: ", error);
