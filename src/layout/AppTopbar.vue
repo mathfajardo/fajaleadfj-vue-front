@@ -31,6 +31,7 @@ async function fazerLogout() {
         </div>
 
         <div class="layout-topbar-actions">
+            <!--
             <div class="layout-config-menu">
                 <button type="button" class="layout-topbar-action" @click="toggleDarkMode">
                     <i :class="[
@@ -48,7 +49,7 @@ async function fazerLogout() {
                     </button>
                 </div>
             </div>
-
+            -->
             <div class="layout-config-menu">
                 <button type="button" class="layout-topbar-action" @click="fazerLogout">
                     <i class="pi pi-sign-out text-red-500"></i>
