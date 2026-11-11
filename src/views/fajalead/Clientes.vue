@@ -3,6 +3,8 @@ import axiosInstance from "@/services/http";
 import { FilterMatchMode } from "@primevue/core/api";
 import { useToast } from "primevue/usetoast";
 import { onMounted, ref } from "vue";
+import ModalEditarClientes from "@/components/ModalEditarCliente.vue"
+import axios from "axios";
 
 // fajalead
 let clientes = ref([]);
@@ -178,19 +180,35 @@ function deleteSelectedProducts() {
     });
 }
 
-function getStatusLabel(status) {
-    switch (status) {
-        case "INSTOCK":
-            return "success";
+// modal editar
+const modalVisivel = ref(false);
+const clienteSelecionado = ref(null);
 
-        case "LOWSTOCK":
-            return "warn";
+function abrirModalEditar(lead) {
+    modalVisivel.value = true;
+    clienteSelecionado.value = { ...lead };
+}
 
-        case "OUTOFSTOCK":
-            return "danger";
+function fecharModal() {
+    modalVisivel.value = false;
+    clienteSelecionado.value = null;
+}
 
-        default:
-            return null;
+async function salvarCliente() {
+    try {
+        const response = await axiosInstance.put('/clientes/' + clienteSelecionado.value.id, clienteSelecionado.value);
+        fecharModal();
+        toast.add({
+            severity: 'success',
+            summary: 'Sucesso',
+            detail: response.data.message,
+            life: 3000
+        });
+        clientes.value = clientes.value.filter(c => c.id != response.data.data.id)
+        clientes.value.push(response.data.data)
+
+    } catch (error) {
+        console.log('erro ao editar', error);
     }
 }
 </script>
@@ -245,7 +263,7 @@ function getStatusLabel(status) {
                 <Column :exportable="false" style="min-width: 12rem">
                     <template #body="slotProps">
                         <Button icon="pi pi-pencil" outlined rounded class="mr-2"
-                            @click="editProduct(slotProps.data)" />
+                            @click="abrirModalEditar(slotProps.data)" />
                         <Button icon="pi pi-trash" outlined rounded severity="danger"
                             @click="confirmDeleteProduct(slotProps.data)" />
                     </template>
@@ -275,5 +293,37 @@ function getStatusLabel(status) {
                 <Button label="Yes" icon="pi pi-check" text @click="deleteSelectedProducts" />
             </template>
         </Dialog>
+
+        <Dialog v-model:visible="modalVisivel" :style="{ width: '450px' }" header="Editar cliente" :modal="true"
+            @hide="fecharModal">
+            <div class="flex flex-col gap-6" v-if="clienteSelecionado">
+                <div>
+                    <label for="nome" class="block font-bold mb-3">Nome</label>
+                    <InputText id="nome" v-model.trim="clienteSelecionado.nome" required="true" autofocus fluid />
+                </div>
+                <div>
+                    <label for="numero" class="block font-bold mb-3">Número</label>
+                    <InputText id="numero" v-model.trim="clienteSelecionado.numero" required="true" fluid />
+                </div>
+                <div>
+                    <label for="plano" class="block font-bold mb-3">Plano</label>
+                    <InputText id="plano" v-model.trim="clienteSelecionado.plano" required="true" fluid />
+                </div>
+                <div>
+                    <label for="mensalidade" class="block font-bold mb-3">Mensalidade</label>
+                    <InputText id="mensalidade" v-model.trim="clienteSelecionado.mensalidade" required="true" fluid />
+                </div>
+                <div>
+                    <label for="observacao" class="block font-bold mb-3">Observação</label>
+                    <Textarea id="observacao" v-model="clienteSelecionado.observacao" rows="3" cols="20" fluid />
+                </div>
+            </div>
+
+            <template #footer>
+                <Button label="Cancelar" icon="pi pi-times" text @click="fecharModal" />
+                <Button label="Salvar" icon="pi pi-check" @click="salvarCliente" />
+            </template>
+        </Dialog>
+
     </div>
 </template>
