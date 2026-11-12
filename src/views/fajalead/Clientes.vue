@@ -310,7 +310,13 @@ async function salvarCliente() {
                 </div>
                 <div>
                     <label for="mensalidade" class="block font-bold mb-3">Mensalidade</label>
-                    <InputText id="mensalidade" v-model.trim="clienteSelecionado.mensalidade" required="true" fluid />
+                    <InputNumber
+                        v-model="clienteSelecionado.mensalidade"
+                        placeholder="Digite o valor da mensalidade..."
+                        mode="currency"
+                        currency="BRL"
+                        locale="pt-BR"
+                    />
                 </div>
                 <div>
                     <label for="observacao" class="block font-bold mb-3">Observação</label>
