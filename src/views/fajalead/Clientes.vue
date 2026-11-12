@@ -3,7 +3,6 @@ import axiosInstance from "@/services/http";
 import { FilterMatchMode } from "@primevue/core/api";
 import { useToast } from "primevue/usetoast";
 import { onMounted, ref } from "vue";
-import ModalEditarClientes from "@/components/ModalEditarCliente.vue"
 import axios from "axios";
 
 // fajalead
