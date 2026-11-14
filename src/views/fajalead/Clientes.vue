@@ -319,8 +319,8 @@ async function salvarCliente() {
                     />
                 </div>
                 <div>
-                    <label for="observacao" class="block font-bold mb-3">Observação</label>
-                    <Textarea id="observacao" v-model="clienteSelecionado.observacao" rows="3" cols="20" fluid />
+                    <label for="observacoes" class="block font-bold mb-3">Observação</label>
+                    <Textarea id="observacoes" v-model="clienteSelecionado.observacoes" rows="3" cols="20" fluid />
                 </div>
             </div>
 
